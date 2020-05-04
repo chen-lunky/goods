@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/mvc
+           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/aop
+		   http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--只扫描controller包下的注解，别的不扫-->
+    <context:component-scan base-package="com.chen">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:include-filter>
+    </context:component-scan>
+
+    <!--配置视图解析器对象-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--文件所在的目录-->
+        <property name="prefix" value="/pages/"/>
+        <!--文件的后缀名-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--不过滤静态资源-->
+    <mvc:resources mapping="/css/**" location="/css/"></mvc:resources>
+    <mvc:resources mapping="/img/**" location="/img/"></mvc:resources>
+    <mvc:resources mapping="/js/**" location="/js/"></mvc:resources>
+    <mvc:resources mapping="/jquery/**" location="/jquery/"></mvc:resources>
+    <mvc:default-servlet-handler/>
+
+    <!--配置文件解析器对象-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10485760"></property>
+    </bean>
+
+    <!--开启对springMvC注解的支持-->
+    <mvc:annotation-driven/>
+
+    <!--
+            支持AOP的注解支持，AOP底层使用代理技术
+            JDK动态代理，要求必须有接口
+            cglib代理，生成子类对象，proxy-target-class="true" 默认使用cglib的方式
+        -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+
+</beans>
