@@ -206,57 +206,6 @@ public class OrderController {
      */
     @RequestMapping("/payment.do")
     public void payment(HttpServletRequest request,HttpServletResponse response) throws IOException {
-//        Properties prop = new Properties();
-//        prop.load(this.getClass().getClassLoader().getResourceAsStream("payment.properties"));
-//        /**
-//         * 1.准备13个参数
-//         */
-//        String p0_Cmd = "Buy";//业务类型，固定值
-//        String p1_MerId = prop.getProperty("p1_MerId");//商品编码，在易宝的唯一标识
-//        String p2_Order = request.getParameter("oid");//订单编码
-//        String p3_Amt = "0.01";//支付金额
-//        String p4_Cur = "CNT";//交易币种，固定值CNT
-//        String p5_Pid = "";//商品名称
-//        String p6_Pcat = "";//商品种类
-//        String p7_Pdesc = "";//商品描述
-//        String p8_Url = prop.getProperty("p8_Url");//在支付成功后，易宝会访问这个地址
-//        String p9_SAF ="";//送货地址
-//        String pa_MP = "";//扩展信息
-//        String pd_FrpId = request.getParameter("yh");//支付通道
-//        String pr_NeedResponse = "1";//应答机制，固定值
-//
-//        /**
-//         * 2.计算hmac
-//         * 需要13个参数
-//         * 需要keyValue
-//         * 需要加密算法
-//         */
-//        String keyValue = prop.getProperty("keyValue");
-//        String hmac = PaymentUtil.buildHmac(p0_Cmd,p1_MerId,p2_Order,p3_Amt,p4_Cur,p5_Pid,p6_Pcat,p7_Pdesc,
-//                p8_Url,p9_SAF,pa_MP,pd_FrpId,pr_NeedResponse,keyValue);
-//        /**
-//         * 3.重定向·到易宝的支付网关
-//         */
-//        StringBuilder sb = new StringBuilder("https://www.yeepay.com/app-merchant-proxy/node");
-//        sb.append("?").append("p0_Cmd=").append(p0_Cmd);
-//        sb.append("&").append("p1_MerId=").append(p1_MerId);
-//        sb.append("&").append("p2_Order=").append(p2_Order);
-//        sb.append("&").append("p3_Amt=").append(p3_Amt);
-//        sb.append("&").append("p4_Cur=").append(p4_Cur);
-//        sb.append("&").append("p5_Pid=").append(p5_Pid);
-//        sb.append("&").append("p6_Pcat=").append(p6_Pcat);
-//        sb.append("&").append("p7_Pdesc=").append(p7_Pdesc);
-//        sb.append("&").append("p8_Url=").append(p8_Url);
-//        sb.append("&").append("p9_SAF=").append(p9_SAF);
-//        sb.append("&").append("pa_MP=").append(pa_MP);
-//        sb.append("&").append("pd_FrpId=").append(pd_FrpId);
-//        sb.append("&").append("pr_NeedResponse=").append(pr_NeedResponse);
-//        sb.append("&").append("hmac=").append(hmac);
-////        return "redirect:"+sb.toString();
-//        response.sendRedirect(sb.toString());
-
-
-
         Properties props = new Properties();
         props.load(this.getClass().getClassLoader().getResourceAsStream("payment.properties"));
         /*
@@ -321,59 +270,6 @@ public class OrderController {
     @RequestMapping("/back.do")
     public ModelAndView back(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ModelAndView mv = new ModelAndView();
-//        /**
-//         * 1.获取12个参数
-//         *
-//         */
-//          String p1_MerId = request.getParameter("p1_MerId");
-//          String r0_Cmd = request.getParameter("r0_Cmd");
-//          String r1_Code = request.getParameter("r1_Code ");
-//          String r2_TxxId = request.getParameter("r2_TxxId");
-//          String r3_Amt = request.getParameter("r3_Amt");
-//          String r4_Cur = request.getParameter("r4_Cur");
-//          String r5_Pid = request.getParameter("r5_Pid");
-//          String r6_Order = request.getParameter("r6_Order");
-//          String r7_Uid = request.getParameter("r7_Uid");
-//          String r8_Mp = request.getParameter("r8_Mp");
-//          String r9_BType = request.getParameter("r9_BType");
-//          String hmac = request.getParameter("hmac");
-//        /**
-//         * 2.获取keyValue
-//         */
-//        Properties prop = new Properties();
-//        prop.load(this.getClass().getClassLoader().getResourceAsStream("payment.properties"));
-//        String keyValue = prop.getProperty("keyValue");
-//
-//        /**
-//         * 3.调用PaymentUtil的校验方法来校验调用者身份
-//         *    如果校验失败：保存失败信息，转发到order-msg.jsp
-//         *    如果校验通过：
-//         *        判断访问的方法时是重定向还是点对点，
-//         *           如果是重定向，修改订单状态，保存成功信息，转发到order-msg.jsp
-//         *           如果是点对点：修改订单状态，返沪success;
-//         */
-//        boolean bool = PaymentUtil.verifyCallback(hmac,p1_MerId, r0_Cmd, r1_Code, r2_TxxId, r3_Amt, r4_Cur,
-//                r5_Pid, r6_Order, r7_Uid, r8_Mp, r9_BType, keyValue);
-//        if (!bool){
-//            mv.addObject("code","error");
-//            mv.addObject("msg","无效的签名，支付失败！(您不是好人！！)");
-//            mv.setViewName("forward:/pages/user/order-msg.jsp");
-//            return mv;
-//        }
-//
-//        if (r1_Code.equals("1")){
-//            orderService.updateStatus(r6_Order,2);
-//            if (r9_BType.equals("1")){//重定向
-//                mv.addObject("code","error");
-//                mv.addObject("msg","支付成功！");
-//                mv.setViewName("forward:/pages/user/order-msg.jsp");
-//            }else if (r9_BType.equals("2")){//d点对点
-//                response.setContentType("text/html;charset=utf-8");
-//                response.getWriter().println("success");
-//            }
-//        }
-//
-
         /*
          * 1. 获取12个参数
          */
